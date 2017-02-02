@@ -63,32 +63,32 @@ Resources:
                 Resource:
                   !Join [ "", [ "arn:aws:dynamodb:", !Ref "AWS::Region", ":", !Ref "AWS::AccountId", ":table/", !Ref DynamoDBTable  ] ]
 
-  EventsRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          -
-            Effect: "Allow"
-            Principal:
-              Service:
-                - "events.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-      Path: "/"
-      Policies:
-        -
-          PolicyName: "inline-policy"
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              -
-                Effect: "Allow"
-                Action:
-                  - lambda:InvokeFunction
-                Resource:
-                  !GetAtt LambdaGenerate.Arn
+  # EventsRole:
+  #   Type: "AWS::IAM::Role"
+  #   Properties:
+  #     AssumeRolePolicyDocument:
+  #       Version: 2012-10-17
+  #       Statement:
+  #         -
+  #           Effect: "Allow"
+  #           Principal:
+  #             Service:
+  #               - "events.amazonaws.com"
+  #           Action:
+  #             - "sts:AssumeRole"
+  #     Path: "/"
+  #     Policies:
+  #       -
+  #         PolicyName: "inline-policy"
+  #         PolicyDocument:
+  #           Version: "2012-10-17"
+  #           Statement:
+  #             -
+  #               Effect: "Allow"
+  #               Action:
+  #                 - lambda:InvokeFunction
+  #               Resource:
+  #                 !GetAtt LambdaGenerate.Arn
 
 
   APIGExecuteLambdaRole:
@@ -118,6 +118,14 @@ Resources:
                 Resource:
                   !GetAtt LambdaConsume.Arn
 
+
+  LambdaInvokePermission:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName:
+        !GetAtt LambdaGenerate.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
 
 
   LambdaConsume:
@@ -219,7 +227,6 @@ Resources:
     Type: "AWS::Events::Rule"
     Properties:
       Description: periodically hits lambda function to get bitcoin exchange data and send to APIG
-      RoleArn: !GetAtt EventsRole.Arn
       ScheduleExpression: rate(5 minutes)
       State: ENABLED
       Targets:

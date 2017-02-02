@@ -1,4 +1,4 @@
-###Elasticsearch Bitcoin
+###Elasticsearch ABC News
 
 Fetches latest ABC news data which is consumed via API Gateway with Lambda proxy. All news items stored in DynamoDB table and logged to CloudWatch Logs.
 

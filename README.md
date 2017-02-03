@@ -33,4 +33,4 @@ A subscription filter defines which log events (from a CloudWatch Logs group) ge
 Gives CloudWatch Logs service the permission to invoke the _LogsToElasticsearch_ function. It is this resource that requires the log group for the function to exist beforehand.
 
 #####LogsToElasticsearch Lambda function
-This is the lambda function that would otherwise get created automatically if the streaming from CloudWatch Logs to Elasticsearch was configured in the console. I've made a small modification to it so that it uses an environment variable to point to the ES domain.
+This is the lambda function that would otherwise get created automatically if the streaming from CloudWatch Logs to Elasticsearch was configured in the console. I've made a small modification to it so that it uses an environment variable to point to the ES domain and to customise the index name as 'abc_news' otherwise it give it a name like 'cwl-2017.02.03'.

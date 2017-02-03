@@ -4,6 +4,8 @@ Fetches latest ABC news data which is consumed via API Gateway with Lambda proxy
 
 CloudWatch Logs streamed to Elasticsearch for analysis.
 
+![alt tag](https://raw.githubusercontent.com/gsat-technology/elasticsearch-abcnews/master/resources/high-level-diagram.png)
+
 ####Streaming Data from CloudWatch Logs to Elasticsearch
 
 Note that CloudWatch Logs doesn't really stream to Elasticsearch. In the console, when want a log to _Steam to Elasticsearch_ what really ends up happening is that it creates a Lambda called 'LogsToElasticsearch' (this will appear in your list of lambda functions). This lambda, written in nodejs, makes the necessary HTTP reqeusts to the Elasticsearch cluster.
@@ -29,3 +31,6 @@ A subscription filter defines which log events (from a CloudWatch Logs group) ge
 
 #####Lambda Permission
 Gives CloudWatch Logs service the permission to invoke the _LogsToElasticsearch_ function. It is this resource that requires the log group for the function to exist beforehand.
+
+#####LogsToElasticsearch Lambda function
+This is the lambda function that would otherwise get created automatically if the streaming from CloudWatch Logs to Elasticsearch was configured in the console. I've made a small modification to it so that it uses an environment variable to point to the ES domain.
